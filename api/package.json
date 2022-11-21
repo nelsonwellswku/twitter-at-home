@@ -1,7 +1,7 @@
 {
-  "name": "node-typescript-boilerplate",
-  "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "name": "tah-api",
+  "version": "0.0.1",
+  "description": "Backend API for Twitter at Home",
   "type": "module",
   "engines": {
     "node": ">= 16.13 <17"
@@ -38,6 +38,7 @@
   "dependencies": {
     "@apollo/server": "^4.1.1",
     "graphql": "^16.6.0",
+    "ioredis": "^5.2.4",
     "tslib": "~2.4"
   }
 }

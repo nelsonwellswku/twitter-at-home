@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { request, gql } from 'graphql-request'
 
 interface Tweet {
     author: string,
     body: string,
 }
 
-const getTweetsQuery = `
-query tweetQuery {
+const getTweetsQuery = gql`{
     Tweets {
       tweetId
       author
@@ -22,9 +22,7 @@ query tweetQuery {
 export const TweetList = () => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
     useEffect(() => {
-        fetch('http://localhost:4000/graphql', { method: 'POST', body: JSON.stringify({ query: getTweetsQuery }), headers: { 'content-type': 'application/json' } })
-            .then(res => res.json())
-            .then(result => setTweets(result.data.Tweets));
+        request('http://localhost:4000/graphql', getTweetsQuery).then(data => setTweets(data.Tweets));
     }, []);
 
     return (<>

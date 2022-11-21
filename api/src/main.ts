@@ -1,5 +1,9 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+import { InitializeAppRedisClient } from './database/AppRedisClient.js';
+import { createTweetResolver } from './features/createTweet.js';
+
+InitializeAppRedisClient();
 
 const schema = `
   type Tweet {
@@ -13,6 +17,10 @@ const schema = `
     commentId: String,
     author: String,
     body: String,
+  }
+
+  type Mutation {
+    CreateTweet(body: String!): Tweet
   }
 
   type Query {
@@ -47,6 +55,9 @@ const tweets = [{
 const resolvers = {
   Query: {
     Tweets: (): unknown => tweets,
+  },
+  Mutation: {
+    CreateTweet: createTweetResolver,
   }
 }
 
