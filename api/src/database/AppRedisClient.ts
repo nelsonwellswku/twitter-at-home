@@ -8,10 +8,11 @@ type ExtendedRedisType = RedisType & ExtendedAppRedisClient
 
 let RedisClient;
 export const InitializeAppRedisClient = (options?: RedisOptions): void => {
+  console.log('Initializing client');
   RedisClient = new Redis(options);
   (RedisClient as ExtendedRedisType).jsonSet = function (...args: string[]): Promise<unknown> {
     return Promise.resolve((RedisClient as ChainableCommander).call('json.set', ...args));
   }
 }
 
-export const AppRedisClient: ExtendedRedisType = RedisClient;
+export const AppRedisClient: () => ExtendedRedisType = () => RedisClient;

@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { AppRedisClient } from '../../database/AppRedisClient'
+import { AppRedisClient } from '@src/database/AppRedisClient.js'
 
 const createKey = (tweetId: string): string => `tweet:${tweetId}`;
 interface Tweet {
@@ -15,7 +15,7 @@ export const createTweetResolver = (_, { body }: { body: string }): Tweet => {
     author: 'hard_coded_user@example.com',
     body,
   };
-  AppRedisClient.jsonSet(createKey(tweetId), '$', JSON.stringify(tweet));
+  AppRedisClient().jsonSet(createKey(tweetId), '$', JSON.stringify(tweet));
   return {
     tweetId,
     author: tweet.author,

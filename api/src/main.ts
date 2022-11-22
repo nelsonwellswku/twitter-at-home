@@ -1,7 +1,7 @@
+import { InitializeAppRedisClient } from '@src/database/AppRedisClient.js';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { InitializeAppRedisClient } from './database/AppRedisClient.js';
-import { createTweetResolver } from './features/createTweet.js';
+import { createTweetResolver } from '@src/features/createTweet/index.js'
 
 InitializeAppRedisClient();
 
