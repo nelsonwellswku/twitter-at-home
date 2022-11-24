@@ -4,7 +4,7 @@
   "description": "Backend API for Twitter at Home",
   "type": "module",
   "engines": {
-    "node": ">= 16.13 <17"
+    "node": ">= 18  "
   },
   "scripts": {
     "start": "node build/src/main.js",
@@ -17,7 +17,8 @@
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage",
     "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/server": "^4.1.1",
@@ -26,6 +27,9 @@
     "tslib": "~2.4"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.13.12",
+    "@graphql-codegen/typescript": "2.8.2",
+    "@graphql-codegen/typescript-resolvers": "2.7.7",
     "@types/jest": "~29.1",
     "@types/node": "~16",
     "@typescript-eslint/eslint-plugin": "~5.39",
@@ -40,7 +44,8 @@
     "ts-jest": "~29.0",
     "tsc-alias": "^1.7.1",
     "tsutils": "~3.21",
-    "typescript": "~4.8"
+    "typescript": "~4.8",
+    "@graphql-codegen/introspection": "2.2.1"
   },
   "author": "Nelson Wells",
   "license": "MIT",

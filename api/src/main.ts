@@ -1,34 +1,16 @@
-import { InitializeAppRedisClient } from '@src/database/AppRedisClient.js';
+import { readFileSync } from 'fs';
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 import { createTweetResolver } from '@src/features/createTweet/index.js'
+import { InitializeAppRedisClient } from '@src/database/AppRedisClient.js';
+import { Resolvers } from '@src/generated/graphql.js'
+import { Tweet } from '@src/generated/graphql.js'
 
 InitializeAppRedisClient();
 
-const schema = `
-  type Tweet {
-    tweetId: String
-    author: String
-    body: String
-    comments: [Comment]
-  }
+const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
-  type Comment {
-    commentId: String,
-    author: String,
-    body: String,
-  }
-
-  type Mutation {
-    CreateTweet(body: String!): Tweet
-  }
-
-  type Query {
-    Tweets: [Tweet]
-  }
-`;
-
-const tweets = [{
+const tweets: Tweet[] = [{
   tweetId: '1',
   author: 'john@example.com',
   body: 'This is my first tweet',
@@ -46,15 +28,15 @@ const tweets = [{
     author: 'mary@example.com',
     body: 'Popeye\'s chicken sandwich is great!',
   }, {
-    commentId: 3,
+    commentId: '3',
     author: 'danielle@example.com',
     body: 'Tacos! Beef and onion',
   }]
 }];
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
-    Tweets: (): unknown => tweets,
+    Tweets: (): Tweet[] => tweets,
   },
   Mutation: {
     CreateTweet: createTweetResolver,
@@ -62,7 +44,7 @@ const resolvers = {
 }
 
 const server = new ApolloServer({
-  typeDefs: schema,
+  typeDefs,
   resolvers,
 });
 

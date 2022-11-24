@@ -1,0 +1,20 @@
+type Tweet {
+  tweetId: String
+  author: String
+  body: String
+  comments: [Comment]
+}
+
+type Comment {
+  commentId: String,
+  author: String,
+  body: String,
+}
+
+type Mutation {
+  CreateTweet(body: String!): Tweet
+}
+
+type Query {
+  Tweets: [Tweet]
+}

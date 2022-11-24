@@ -1,12 +1,8 @@
 import { randomUUID } from 'crypto';
+import { Tweet } from '@src/generated/graphql.js'
 import { AppRedisClient } from '@src/database/AppRedisClient.js'
 
 const createKey = (tweetId: string): string => `tweet:${tweetId}`;
-interface Tweet {
-  tweetId: string,
-  author: string,
-  body: string
-}
 
 export const createTweetResolver = (_, { body }: { body: string }): Tweet => {
   const tweetId = randomUUID();
