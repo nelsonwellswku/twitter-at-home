@@ -1,34 +1,55 @@
-/**
- * Some predefined delay values (in milliseconds).
- */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
+import { readFileSync } from 'fs';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { createTweetResolver } from '@src/features/createTweet/index.js'
+import { InitializeAppRedisClient } from '@src/database/AppRedisClient.js';
+import { Resolvers } from '@src/generated/graphql.js'
+import { Tweet } from '@src/generated/graphql.js'
+
+InitializeAppRedisClient();
+
+const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
+
+const tweets: Tweet[] = [{
+  tweetId: '1',
+  author: 'john@example.com',
+  body: 'This is my first tweet',
+  comments: [{
+    commentId: '1',
+    author: 'mary@example.com',
+    body: 'Welcome to twitter-at-home!'
+  }]
+}, {
+  tweetId: '2',
+  author: 'john@example.com',
+  body: 'What\'s good for dinner tonight?',
+  comments: [{
+    commentId: '2',
+    author: 'mary@example.com',
+    body: 'Popeye\'s chicken sandwich is great!',
+  }, {
+    commentId: '3',
+    author: 'danielle@example.com',
+    body: 'Tacos! Beef and onion',
+  }]
+}];
+
+const resolvers: Resolvers = {
+  Query: {
+    Tweets: (): Tweet[] => tweets,
+  },
+  Mutation: {
+    CreateTweet: createTweetResolver,
+  }
 }
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium,
-): Promise<string> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay),
-  );
-}
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
-// Please see the comment in the .eslintrc.json file about the suppressed rule!
-// Below is an example of how to use ESLint errors suppression. You can read more
-// at https://eslint.org/docs/latest/user-guide/configuring/rules#disabling-rules
+const { url } = await startStandaloneServer(server, {
+  listen: { port: 4000 },
+});
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function greeter(name: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  // The name parameter should be of type string. Any is used only to trigger the rule.
-  return await delayedHello(name, Delays.Long);
-}
+console.log(`🚀  Server ready at: ${url}`);
