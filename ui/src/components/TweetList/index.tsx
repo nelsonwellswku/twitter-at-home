@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { request, gql } from 'graphql-request'
 import { TweetCard } from '../TweetCard';
+import c from '../../constants';
 
 interface Tweet {
   tweetId: string,
@@ -24,7 +25,7 @@ const getTweetsQuery = gql`{
 export const TweetList = () => {
   const [tweets, setTweets] = useState<Tweet[]>([]);
   useEffect(() => {
-    request('http://localhost:4000/graphql', getTweetsQuery).then(data => setTweets(data.Tweets));
+    request(c.GRAPHQL_ENDPOINT, getTweetsQuery).then(data => setTweets(data.Tweets));
   }, []);
 
   return (<>

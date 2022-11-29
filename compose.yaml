@@ -2,5 +2,11 @@ version: "3.9"
 services:
   redis-service:
     image: "redis/redis-stack-server:6.2.4-v4"
-    ports: 
+    environment:
+      - REDIS_ARGS=--save 60 1
+    ports:
       - "6379:6379"
+    volumes:
+      - data:/data
+volumes:
+  data:
