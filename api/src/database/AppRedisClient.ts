@@ -1,4 +1,4 @@
-import RedisModule, { Redis as RedisType, RedisOptions, ChainableCommander } from "ioredis"
+import RedisModule, { Redis as RedisType, RedisOptions } from "ioredis"
 const Redis = RedisModule.default;
 
 type ExtendedAppRedisClient = {
@@ -7,13 +7,13 @@ type ExtendedAppRedisClient = {
 }
 type ExtendedRedisType = RedisType & ExtendedAppRedisClient
 
-let RedisClient;
+let RedisClient = null as ExtendedRedisType;
 export const InitializeAppRedisClient = (options?: RedisOptions): void => {
   console.log('Initializing client');
-  RedisClient = new Redis(options);
+  RedisClient = new Redis(options) as ExtendedRedisType;
 
   (RedisClient as ExtendedRedisType).jsonSet = function (...args: string[]): Promise<unknown> {
-    return Promise.resolve((RedisClient as ChainableCommander).call('json.set', ...args));
+    return Promise.resolve((RedisClient as ExtendedRedisType).call('json.set', ...args));
   };
 
   (RedisClient as ExtendedRedisType).jsonGet = async function <T>(...args: string[]): Promise<T> {
@@ -22,4 +22,4 @@ export const InitializeAppRedisClient = (options?: RedisOptions): void => {
   }
 }
 
-export const AppRedisClient: () => ExtendedRedisType = () => RedisClient;
+export { RedisClient as default };

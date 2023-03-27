@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { Tweet } from '@src/generated/graphql.js'
-import { AppRedisClient } from '@src/database/AppRedisClient.js'
+import AppRedisClient from '@src/database/AppRedisClient.js'
 import { currentEpochMs } from '@src/datetime/index.js';
 import { makeTweetKey, allTweetsByEpochIndexKey } from '@src/database/keys.js';
 
@@ -14,8 +14,8 @@ export const createTweetResolver = async (_, { body }: { body: string }): Promis
     body,
     createTime: epoch,
   };
-  await AppRedisClient().jsonSet(tweetKey, '$', JSON.stringify(tweet));
-  await AppRedisClient().zadd(allTweetsByEpochIndexKey, epoch, tweetKey);
+  await AppRedisClient.jsonSet(tweetKey, '$', JSON.stringify(tweet));
+  await AppRedisClient.zadd(allTweetsByEpochIndexKey, epoch, tweetKey);
 
   return {
     tweetId,

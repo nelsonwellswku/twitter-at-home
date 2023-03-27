@@ -1,10 +1,11 @@
 import './App.css';
+import NavBar from './components/NavBar/NavBar';
 import { TweetList } from './components/TweetList';
 import { TweetPrompt } from './components/TweetPrompt';
 
 function App() {
   return (<div className='container mx-auto'>
-    <h1 className='text-3xl pb-1'>Twitter At Home 🏠</h1>
+    <NavBar />
     <TweetPrompt />
     <TweetList />
   </div>)
