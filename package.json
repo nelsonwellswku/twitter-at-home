@@ -6,7 +6,7 @@
     "start:api": "npm --prefix api run start:dev",
     "start:ui": "npm --prefix ui run start",
     "start:redis": "docker compose up redis-service",
-    "start:dev": "concurrently \"npm run start:redis\" \"npm run start:ui\" \"npm run start:api\""
+    "start": "concurrently \"npm run start:redis\" \"npm run start:ui\" \"npm run start:api\""
   },
   "repository": {
     "type": "git",
