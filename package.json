@@ -4,9 +4,9 @@
   "description": "Twitter clone for fun",
   "scripts": {
     "start:api": "npm --prefix api run start:dev",
-    "start:ui": "npm --prefix ui run start",
+    "start:ui": "pnpm --prefix ui run dev",
     "start:redis": "docker compose up redis-service",
-    "start": "concurrently \"npm run start:redis\" \"npm run start:ui\" \"npm run start:api\""
+    "start": "concurrently \"npm run start:redis\" \"pnpm run start:ui\" \"npm run start:api\""
   },
   "repository": {
     "type": "git",

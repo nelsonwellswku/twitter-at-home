@@ -1,8 +1,7 @@
-import { request, gql } from 'graphql-request';
 import { ChangeEvent, useState } from 'react';
-import c from '../../constants'
+import { useMutation, gql } from "@apollo/client";
 
-const createTweetQuery = gql`
+const createTweetMutation = gql`
     mutation CreateTweetMutation($body: String!) {
         CreateTweet(body: $body) {
             tweetId
@@ -12,20 +11,21 @@ const createTweetQuery = gql`
 
 export const TweetPrompt = () => {
   const [formField, setFormField] = useState('');
+  const [createTweet, { data, loading, error }] = useMutation(createTweetMutation)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormField(event.target.value);
   }
 
   const submitTweet = async () => {
-    await request(c.GRAPHQL_ENDPOINT, createTweetQuery, { body: formField });
+    await createTweet({ variables: { body: formField } });
     setFormField('');
   };
 
   return (
-    <div className='p-4 border-solid border-sky-500 border-2 rounded-md w-2/5'>
-      <input placeholder="What's the buzz?" id='createTweetFormField' onChange={handleChange} className="p-1 rounded-md w-96 focus:outline-blue-300" />
-      <button onClick={submitTweet} className="p-1 bg-slate-50 ml-1 rounded-md pl-2 pr-2 hover:bg-slate-100 active:bg-slate-200">Submit</button>
+    <div className='p-4 border-solid border-sky-500  bg-sky-200 border-sky-300" border-2 rounded-md flex justify-center'>
+      <input type="text" onChange={handleChange} id="createTweetFormField" placeholder="What's the buzz?" className="w-4/5 rounded-md p-3 focus:outline-none" value={formField}></input>
+      <button onClick={submitTweet} className='btn btn-primary ml-3'>Submit</button>
     </div>
   )
 }
