@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "Twitter clone for fun",
   "scripts": {
-    "start:api": "npm --prefix api run start:dev",
+    "start:api": "pnpm --prefix api run start:dev",
     "start:ui": "pnpm --prefix ui run dev",
     "start:redis": "docker compose up redis-service",
-    "start": "concurrently \"npm run start:redis\" \"pnpm run start:ui\" \"npm run start:api\""
+    "start": "concurrently \"pnpm run start:redis\" \"pnpm run start:ui\" \"pnpm run start:api\""
   },
   "repository": {
     "type": "git",
