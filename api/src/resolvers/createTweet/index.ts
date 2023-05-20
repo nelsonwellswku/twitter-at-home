@@ -3,14 +3,17 @@ import { Tweet } from '@src/generated/graphql.js'
 import AppRedisClient from '@src/database/AppRedisClient.js'
 import { currentEpochMs } from '@src/datetime/index.js';
 import { makeTweetKey, allTweetsByEpochIndexKey } from '@src/database/keys.js';
+import { ApolloContext } from '@src/apolloContext.js';
 
-export const createTweetResolver = async (_, { body }: { body: string }): Promise<Tweet> => {
+import { MutationCreateTweetArgs as CreateTweetArgs } from '@src/generated/graphql.js'
+
+export const createTweetResolver = async (_, { body }: CreateTweetArgs, context: ApolloContext): Promise<Tweet> => {
   const tweetId = randomUUID();
   const tweetKey = makeTweetKey(tweetId);
   const epoch = currentEpochMs();
   const tweet = {
     tweetId,
-    author: 'hard_coded_user@example.com',
+    author: context.user.id,
     body,
     createTime: epoch,
   };

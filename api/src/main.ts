@@ -9,6 +9,7 @@ import { Resolvers } from '@src/generated/graphql.js';
 import { createTweetResolver } from '@src/resolvers/createTweet/index.js';
 import { getTweets } from '@src/resolvers/getTweets/index.js';
 import { createUser } from '@src/user/createUser.js';
+import { ApolloContext } from './apolloContext.js';
 
 
 InitializeAppRedisClient();
@@ -26,12 +27,12 @@ const resolvers: Resolvers = {
   }
 }
 
-const server = new ApolloServer({
+const server = new ApolloServer<ApolloContext>({
   typeDefs,
   resolvers,
 });
 
-const { url } = await startStandaloneServer(server, {
+const { url } = await startStandaloneServer<ApolloContext>(server, {
   listen: { port: 4000 },
   context: async ({ req }) => {
 
