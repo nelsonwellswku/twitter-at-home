@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
-import { msalConfig } from './auth-config';
-import appConfig from "./app-config";
+import { msalConfig } from './authConfig';
+import appConfig from "./appConfig";
 import App from "./App";
 import './index.css'
 
@@ -55,7 +55,16 @@ const authLink = setContext(async (_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Tweet: {
+        keyFields: ['tweetId'],
+      },
+      User: {
+        keyFields: ['userId'],
+      }
+    }
+  }),
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

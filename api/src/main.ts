@@ -4,15 +4,18 @@ import { readFileSync } from 'fs';
 
 import { appConfig } from '@src/appConfig.js';
 import { createValidator } from '@src/auth/validateToken.js';
-import { InitializeAppRedisClient } from '@src/database/AppRedisClient.js';
+import { initializeAppRedisClient } from '@src/database/appRedisClient.js';
 import { Resolvers } from '@src/generated/graphql.js';
 import { createTweetResolver } from '@src/resolvers/createTweet/index.js';
 import { getTweets } from '@src/resolvers/getTweets/index.js';
 import { createUser } from '@src/user/createUser.js';
-import { ApolloContext } from './apolloContext.js';
+import { ApolloContext } from '@src/apolloContext.js';
+import { createIndexes, dropIndexes } from '@src/database/createIndexes.js';
+import { getUser } from '@src/resolvers/getUser/index.js';
 
-
-InitializeAppRedisClient();
+await initializeAppRedisClient();
+await dropIndexes();
+await createIndexes();
 
 const typeDefs = readFileSync('./schema.graphql', { encoding: 'utf-8' });
 
@@ -24,6 +27,9 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     CreateTweet: createTweetResolver,
+  },
+  Tweet: {
+    author: getUser
   }
 }
 

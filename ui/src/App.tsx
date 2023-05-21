@@ -4,6 +4,7 @@ import { TweetPrompt } from "./components/TweetPrompt";
 import NavBar from "./components/NavBar";
 import { LoginBox } from "./components/LoginBox";
 import { LeftSideBar } from "./components/LeftSideBar";
+import { TweetList } from "./components/TweetList";
 
 type Props = {
   pca: PublicClientApplication,
@@ -20,8 +21,9 @@ function App({ pca }: Props) {
           </div>
           <div className="col-span-7">
             <TweetPrompt />
+            <TweetList />
           </div>
-          <div className="col-span-3 bg-sky-200 rounded-md">
+          <div className="col-span-3">
             <LoginBox />
           </div>
         </div>
