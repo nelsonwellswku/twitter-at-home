@@ -13,7 +13,7 @@ export const LoginBox = () => {
     const username = instance.getActiveAccount()?.idTokenClaims?.given_name as string || "null";
 
     return (
-        <>
+        <div className="bg-sky-200 rounded-md pb-3">
             <UnauthenticatedTemplate>
                 <p className="pl-3 pt-3"><LinkButton onClick={async () => await loginRedirect(instance)}>Sign Up or Sign In</LinkButton></p>
             </UnauthenticatedTemplate>
@@ -30,5 +30,5 @@ export const LoginBox = () => {
                     </div>
                 </div>
             </AuthenticatedTemplate >
-        </>)
+        </div>)
 }

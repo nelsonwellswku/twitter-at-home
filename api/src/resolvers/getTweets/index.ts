@@ -1,13 +1,24 @@
 import { Tweet } from "@src/generated/graphql.js";
-import AppRedisClient from "@src/database/AppRedisClient.js";
-import { allTweetsByEpochIndexKey } from "@src/database/keys.js";
+import { appRedisClient } from "@src/database/appRedisClient.js";
+import { indexNames } from "@src/database/indexNames.js";
+import { TweetDocument } from "@src/database/documentTypes.js";
 
 export const getTweets = async (): Promise<Tweet[]> => {
-  const tweetKeys = await AppRedisClient.zrevrange(allTweetsByEpochIndexKey, 0, 10);
-  const promises = tweetKeys.map(async tweetKey => {
-    const json = await AppRedisClient.jsonGet<Tweet>(tweetKey);
-    return json;
+  const searchResults = await appRedisClient.ft.search(indexNames.TWEET_INDEX, '*', {
+    SORTBY: {
+      BY: 'createTime',
+      DIRECTION: 'DESC'
+    }
   });
-  const tweets = await Promise.all(promises);
+
+  const tweets: Tweet[] = searchResults.documents.map(({ value }) => {
+    const tweetDocument = value as TweetDocument;
+    return {
+      tweetId: tweetDocument.tweetId,
+      body: tweetDocument.body,
+      createTime: tweetDocument.createTime,
+    }
+  });
+
   return tweets;
 }

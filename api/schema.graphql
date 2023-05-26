@@ -1,14 +1,23 @@
+scalar Timestamp
+
 type Tweet {
   tweetId: String
-  author: String
+  author: User,
   body: String
+  createTime: Timestamp,
   comments: [Comment]
 }
 
 type Comment {
   commentId: String,
-  author: String,
+  author: User,
   body: String,
+}
+
+type User {
+  userId: String,
+  firstName: String,
+  lastName: String,
 }
 
 type Mutation {
@@ -16,5 +25,6 @@ type Mutation {
 }
 
 type Query {
-  Tweets: [Tweet]
+  Tweets: [Tweet],
+  User: User,
 }

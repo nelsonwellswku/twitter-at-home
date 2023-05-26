@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
 import { Tweet } from '@src/generated/graphql.js'
-import AppRedisClient from '@src/database/AppRedisClient.js'
+import { appRedisClient } from '@src/database/appRedisClient.js'
 import { currentEpochMs } from '@src/datetime/index.js';
-import { makeTweetKey, allTweetsByEpochIndexKey } from '@src/database/keys.js';
+import { makeTweetKey } from '@src/database/keys.js';
 import { ApolloContext } from '@src/apolloContext.js';
 
 import { MutationCreateTweetArgs as CreateTweetArgs } from '@src/generated/graphql.js'
@@ -17,12 +17,11 @@ export const createTweetResolver = async (_, { body }: CreateTweetArgs, context:
     body,
     createTime: epoch,
   };
-  await AppRedisClient.jsonSet(tweetKey, '$', JSON.stringify(tweet));
-  await AppRedisClient.zadd(allTweetsByEpochIndexKey, epoch, tweetKey);
+  await appRedisClient.json.set(tweetKey, '$', tweet);
 
   return {
     tweetId,
-    author: tweet.author,
     body,
+    createTime: epoch
   }
 };

@@ -1,4 +1,4 @@
-import AppRedisClient from '@src/database/AppRedisClient.js';
+import { appRedisClient } from '@src/database/appRedisClient.js';
 import { makeUserKey } from '@src/database/keys.js';
 
 type CreateUser = {
@@ -9,5 +9,7 @@ type CreateUser = {
 
 export const createUser = async (createUser: CreateUser): Promise<void> => {
   const userKey = makeUserKey(createUser.userId);
-  await AppRedisClient.jsonSet(userKey, '$', JSON.stringify(createUser), 'NX');
+  await appRedisClient.json.set(userKey, '$', createUser, {
+    NX: true,
+  });
 }
