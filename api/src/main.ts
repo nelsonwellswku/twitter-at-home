@@ -12,6 +12,8 @@ import { createUser } from '@src/user/createUser.js';
 import { ApolloContext } from '@src/apolloContext.js';
 import { createIndexes, dropIndexes } from '@src/database/createIndexes.js';
 import { getUser } from '@src/resolvers/getUser/index.js';
+import { createCommentResolver } from './resolvers/createComment.js';
+import { getComments } from './resolvers/getComments.js';
 
 await initializeAppRedisClient();
 await dropIndexes();
@@ -27,9 +29,14 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     CreateTweet: createTweetResolver,
+    CreateComment: createCommentResolver
   },
   Tweet: {
-    author: getUser
+    author: getUser,
+    comments: getComments
+  },
+  Comment: {
+    author: getUser,
   }
 }
 

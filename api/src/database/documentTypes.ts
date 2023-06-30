@@ -5,6 +5,13 @@ export type TweetDocument = {
   createTime: number,
 }
 
+export type CommentDocument = {
+  commentId: string,
+  body: string,
+  authorId: string,
+  createTime: number,
+}
+
 export type UserDocument = {
   userId: string,
   firstName: string,
