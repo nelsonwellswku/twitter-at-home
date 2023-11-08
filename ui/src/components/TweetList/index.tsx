@@ -1,3 +1,4 @@
+import { CommentCard } from '../CommentCard';
 import { TweetCard } from '../TweetCard';
 import { gql, useQuery } from '@apollo/client';
 
@@ -9,6 +10,14 @@ interface Tweet {
   },
   body: string,
   createTime: number
+  comments: {
+    body: string;
+    createTime: number;
+    author: {
+      firstName: string;
+      lastName: string;
+    }
+  }[]
 }
 
 const getTweetsQuery = gql`
@@ -22,6 +31,15 @@ const getTweetsQuery = gql`
         }
         body
         createTime
+        comments {
+          author {
+            userId
+            firstName
+            lastName
+          }
+          body
+          createTime
+        }
       }
     }
 `;
@@ -29,8 +47,18 @@ const getTweetsQuery = gql`
 export const TweetList = () => {
   const { loading, error, data } = useQuery<{ 'Tweets': Tweet[] }>(getTweetsQuery);
 
+  if (!data || !data.Tweets) { return null; }
+
   return (<>
     <h1 className='text-xl mt-3 mb-1'>Recent Tweets</h1>
-    {data && data.Tweets && data.Tweets.map((tweet: Tweet, index: number) => <TweetCard tweet={tweet} index={index} key={tweet.tweetId} />)}
+
+    {data.Tweets.map((tweet: Tweet, index: number) => {
+      const hasComments = tweet.comments.length > 0;
+
+      return <TweetCard tweet={tweet} index={index} key={tweet.tweetId}>
+        {hasComments ? <hr className='my-2 border-black' /> : null}
+        {tweet.comments.map(comment => <CommentCard comment={comment} />)}
+      </TweetCard>
+    })}
   </>);
 };

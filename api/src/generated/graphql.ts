@@ -20,11 +20,19 @@ export type Comment = {
   author?: Maybe<User>;
   body?: Maybe<Scalars['String']>;
   commentId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']>;
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
+  CreateComment?: Maybe<Comment>;
   CreateTweet?: Maybe<Tweet>;
+};
+
+
+export type MutationCreateCommentArgs = {
+  body: Scalars['String'];
+  tweetId: Scalars['String'];
 };
 
 
@@ -149,10 +157,12 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   author?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   body?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   commentId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createTime?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  CreateComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'body' | 'tweetId'>>;
   CreateTweet?: Resolver<Maybe<ResolversTypes['Tweet']>, ParentType, ContextType, RequireFields<MutationCreateTweetArgs, 'body'>>;
 };
 

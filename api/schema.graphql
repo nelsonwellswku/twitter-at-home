@@ -12,6 +12,7 @@ type Comment {
   commentId: String,
   author: User,
   body: String,
+  createTime: Timestamp,
 }
 
 type User {
@@ -22,6 +23,7 @@ type User {
 
 type Mutation {
   CreateTweet(body: String!): Tweet
+  CreateComment(tweetId: String!, body: String!): Comment
 }
 
 type Query {
