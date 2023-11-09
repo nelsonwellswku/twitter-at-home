@@ -4,23 +4,25 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  Timestamp: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Timestamp: { input: any; output: any; }
 };
 
 export type Comment = {
   __typename?: 'Comment';
   author?: Maybe<User>;
-  body?: Maybe<Scalars['String']>;
-  commentId?: Maybe<Scalars['String']>;
-  createTime?: Maybe<Scalars['Timestamp']>;
+  body?: Maybe<Scalars['String']['output']>;
+  commentId?: Maybe<Scalars['String']['output']>;
+  createTime?: Maybe<Scalars['Timestamp']['output']>;
 };
 
 export type Mutation = {
@@ -31,13 +33,13 @@ export type Mutation = {
 
 
 export type MutationCreateCommentArgs = {
-  body: Scalars['String'];
-  tweetId: Scalars['String'];
+  body: Scalars['String']['input'];
+  tweetId: Scalars['String']['input'];
 };
 
 
 export type MutationCreateTweetArgs = {
-  body: Scalars['String'];
+  body: Scalars['String']['input'];
 };
 
 export type Query = {
@@ -49,17 +51,17 @@ export type Query = {
 export type Tweet = {
   __typename?: 'Tweet';
   author?: Maybe<User>;
-  body?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']['output']>;
   comments?: Maybe<Array<Maybe<Comment>>>;
-  createTime?: Maybe<Scalars['Timestamp']>;
-  tweetId?: Maybe<Scalars['String']>;
+  createTime?: Maybe<Scalars['Timestamp']['output']>;
+  tweetId?: Maybe<Scalars['String']['output']>;
 };
 
 export type User = {
   __typename?: 'User';
-  firstName?: Maybe<Scalars['String']>;
-  lastName?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
+  firstName?: Maybe<Scalars['String']['output']>;
+  lastName?: Maybe<Scalars['String']['output']>;
+  userId?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -129,26 +131,28 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Comment: ResolverTypeWrapper<Comment>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  String: ResolverTypeWrapper<Scalars['String']>;
-  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']['output']>;
   Tweet: ResolverTypeWrapper<Tweet>;
   User: ResolverTypeWrapper<User>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Boolean: Scalars['Boolean'];
+  Boolean: Scalars['Boolean']['output'];
   Comment: Comment;
   Mutation: {};
   Query: {};
-  String: Scalars['String'];
-  Timestamp: Scalars['Timestamp'];
+  String: Scalars['String']['output'];
+  Timestamp: Scalars['Timestamp']['output'];
   Tweet: Tweet;
   User: User;
 };
