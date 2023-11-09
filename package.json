@@ -8,6 +8,9 @@
     "start:redis": "docker compose up redis-service",
     "start": "concurrently \"pnpm run start:redis\" \"pnpm run start:ui\" \"pnpm run start:api\""
   },
+  "engines": {
+    "node": ">=20 <21"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nelsonwellswku/twitter-at-home.git"
