@@ -7,7 +7,7 @@
     "node": ">=20 <21"
   },
   "scripts": {
-    "start": "node build/src/main.js",
+    "start": "node --import ./build/src/instrumentation.js build/src/main.js",
     "start:dev": "nodemon --watch src -e ts,js,json -x \"pnpm run build && pnpm start\"",
     "clean": "rimraf coverage build tmp",
     "prebuild": "pnpm run lint",
@@ -22,6 +22,17 @@
   },
   "dependencies": {
     "@apollo/server": "^4.9.5",
+    "@opentelemetry/api": "^1.7.0",
+    "@opentelemetry/core": "^1.18.1",
+    "@opentelemetry/exporter-zipkin": "^1.18.1",
+    "@opentelemetry/instrumentation": "^0.45.1",
+    "@opentelemetry/instrumentation-express": "^0.33.2",
+    "@opentelemetry/instrumentation-graphql": "^0.35.2",
+    "@opentelemetry/instrumentation-http": "^0.45.1",
+    "@opentelemetry/instrumentation-redis-4": "^0.35.3",
+    "@opentelemetry/resources": "^1.18.1",
+    "@opentelemetry/sdk-trace-base": "^1.18.1",
+    "@opentelemetry/sdk-trace-node": "^1.18.1",
     "azure-ad-verify-token": "^3.0.3",
     "graphql": "^16.8.1",
     "jsonwebtoken": "^9.0.2",
