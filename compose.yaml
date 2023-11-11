@@ -8,5 +8,9 @@ services:
       - "6379:6379"
     volumes:
       - data:/data
+  zipkin-service:
+    image: "openzipkin/zipkin:2"
+    ports:
+      - "9411:9411"
 volumes:
   data:

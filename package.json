@@ -5,7 +5,7 @@
   "scripts": {
     "start:api": "pnpm --prefix api run start:dev",
     "start:ui": "pnpm --prefix ui run dev",
-    "start:redis": "docker compose up redis-service",
+    "start:redis": "docker compose up redis-service zipkin-service",
     "start": "concurrently \"pnpm run start:redis\" \"pnpm run start:ui\" \"pnpm run start:api\""
   },
   "engines": {

@@ -17,6 +17,7 @@ Since this is just for fun, I chose some tech to experiment with that I haven't 
 * [DaisyUI](https://daisyui.com/) components / Tailwind CSS
 * [Apollo Client](https://www.apollographql.com/docs/react/) and [Apollo Server](https://www.apollographql.com/docs/apollo-server/) for GraphQL
 * [Redis](https://redis.io/) with [JSON](https://redis.io/docs/data-types/json/) and [Search](https://redis.io/docs/interact/search-and-query/) modules for the persistent database
+* [OpenTelemetry](https://opentelemetry.io/docs/instrumentation/js/) and [Zipkin](https://zipkin.io/) for traces and metrics
 
 ## Development
 
@@ -30,7 +31,7 @@ This app requires Node 20. To make it easy, it is recommended to [install nvm](h
 
 ### docker
 
-The default way to run the app relies on [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/) to easily stand up a Redis database.
+The default way to run the app relies on [Docker](https://www.docker.com/get-started/) and [Docker Compose](https://docs.docker.com/compose/) to easily stand up a Redis database and a Zipkin instance for OpenTelemetry data.
 
 ### Running the app
 
@@ -41,4 +42,4 @@ pnpm i && pnpm i -C ui && pnpm i -C api
 pnpm start
 ```
 
-This will restore all of the dependencies and then run the UI, the backend, and the Redis database.
+is will restore all of the dependencies and then run the UI, the backend, the Redis database, and the Zipkin instance.
