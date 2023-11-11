@@ -43,3 +43,5 @@ pnpm start
 ```
 
 is will restore all of the dependencies and then run the UI, the backend, the Redis database, and the Zipkin instance.
+
+The app will be accessible on localhost:3000 and Zipkin on localhost:9411.
