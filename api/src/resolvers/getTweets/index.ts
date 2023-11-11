@@ -1,24 +1,13 @@
 import { Tweet } from "@src/generated/graphql.js";
-import { appRedisClient } from "@src/database/appRedisClient.js";
-import { indexNames } from "@src/database/indexNames.js";
-import { TweetDocument } from "@src/database/documentTypes.js";
+import { ApolloContext } from "@src/apolloContext.js";
 
-export const getTweets = async (): Promise<Tweet[]> => {
-  const searchResults = await appRedisClient.ft.search(indexNames.TWEET_INDEX, '*', {
-    SORTBY: {
-      BY: 'createTime',
-      DIRECTION: 'DESC'
-    }
-  });
+export const getTweetsResolver = async (_: unknown, __: unknown, context: ApolloContext): Promise<Tweet[]> => {
+  const tweetDocuments = await context.dataSources.tweetDataSource.searchTweets();
 
-  const tweets: Tweet[] = searchResults.documents.map(({ value }) => {
-    const tweetDocument = value as TweetDocument;
-    return {
+  return tweetDocuments.map(tweetDocument => (
+    {
       tweetId: tweetDocument.tweetId,
       body: tweetDocument.body,
       createTime: tweetDocument.createTime,
-    }
-  });
-
-  return tweets;
+    }));
 }
