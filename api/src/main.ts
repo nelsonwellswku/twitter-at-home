@@ -4,16 +4,18 @@ import { readFileSync } from 'fs';
 
 import { appConfig } from '@src/appConfig.js';
 import { createValidator } from '@src/auth/validateToken.js';
-import { initializeAppRedisClient } from '@src/database/appRedisClient.js';
+import { initializeAppRedisClient, appRedisClient } from '@src/database/appRedisClient.js';
 import { Resolvers } from '@src/generated/graphql.js';
 import { createTweetResolver } from '@src/resolvers/createTweet/index.js';
-import { getTweets } from '@src/resolvers/getTweets/index.js';
+import { getTweetsResolver } from '@src/resolvers/getTweets/index.js';
 import { createUser } from '@src/user/createUser.js';
 import { ApolloContext } from '@src/apolloContext.js';
 import { createIndexes, dropIndexes } from '@src/database/createIndexes.js';
 import { getUser } from '@src/resolvers/getUser/index.js';
 import { createCommentResolver } from './resolvers/createComment.js';
 import { getComments } from './resolvers/getComments.js';
+import { UserDataSource } from './database/UserDataSource.js';
+import { TweetDataSource } from './database/TweetDataSource.js';
 
 await initializeAppRedisClient();
 await dropIndexes();
@@ -25,7 +27,7 @@ const validateToken = createValidator(appConfig.auth.wellKnownEndpoint);
 
 const resolvers: Resolvers = {
   Query: {
-    Tweets: getTweets,
+    Tweets: getTweetsResolver,
   },
   Mutation: {
     CreateTweet: createTweetResolver,
@@ -49,6 +51,13 @@ const { url } = await startStandaloneServer<ApolloContext>(server, {
   listen: { port: 4000 },
   context: async ({ req }) => {
 
+    const innerContext: ApolloContext = {
+      dataSources: {
+        userDataSource: new UserDataSource(appRedisClient),
+        tweetDataSource: new TweetDataSource(appRedisClient),
+      }
+    };
+
     const authHeader = req.headers.authorization || '';
     if (authHeader) {
       const [, token] = authHeader.split('Bearer ');
@@ -60,13 +69,9 @@ const { url } = await startStandaloneServer<ApolloContext>(server, {
         lastName: decodedJwt.family_name,
       })
 
-      return {
-        user: {
-          id: decodedJwt.sub,
-        }
-      }
+      innerContext.user = { id: decodedJwt.sub };
     }
-    return {};
+    return innerContext;
   }
 });
 
