@@ -1,14 +1,14 @@
-import { PublicClientApplication } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
-import { TweetPrompt } from "./components/TweetPrompt";
-import NavBar from "./components/NavBar";
-import { LoginBox } from "./components/LoginBox";
-import { LeftSideBar } from "./components/LeftSideBar";
-import { TweetList } from "./components/TweetList";
+import { PublicClientApplication } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
+import { TweetPrompt } from './components/TweetPrompt';
+import NavBar from './components/NavBar';
+import { LoginBox } from './components/LoginBox';
+import { LeftSideBar } from './components/LeftSideBar';
+import { TweetList } from './components/TweetList';
 
 type Props = {
-  pca: PublicClientApplication,
-}
+  pca: PublicClientApplication;
+};
 
 function App({ pca }: Props) {
   return (
@@ -29,7 +29,7 @@ function App({ pca }: Props) {
         </div>
       </div>
     </MsalProvider>
-  )
+  );
 }
 
 export default App;

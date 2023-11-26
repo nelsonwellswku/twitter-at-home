@@ -4,7 +4,10 @@ import { readFileSync } from 'fs';
 
 import { appConfig } from '@src/appConfig.js';
 import { createValidator } from '@src/auth/validateToken.js';
-import { initializeAppRedisClient, appRedisClient } from '@src/database/appRedisClient.js';
+import {
+  initializeAppRedisClient,
+  appRedisClient,
+} from '@src/database/appRedisClient.js';
 import { Resolvers } from '@src/generated/graphql.js';
 import { createTweetResolver } from '@src/resolvers/createTweet/index.js';
 import { getTweetsResolver } from '@src/resolvers/getTweets/index.js';
@@ -31,16 +34,16 @@ const resolvers: Resolvers = {
   },
   Mutation: {
     CreateTweet: createTweetResolver,
-    CreateComment: createCommentResolver
+    CreateComment: createCommentResolver,
   },
   Tweet: {
     author: getUser,
-    comments: getComments
+    comments: getComments,
   },
   Comment: {
     author: getUser,
-  }
-}
+  },
+};
 
 const server = new ApolloServer<ApolloContext>({
   typeDefs,
@@ -50,29 +53,28 @@ const server = new ApolloServer<ApolloContext>({
 const { url } = await startStandaloneServer<ApolloContext>(server, {
   listen: { port: 4000 },
   context: async ({ req }) => {
-
     const innerContext: ApolloContext = {
       dataSources: {
         userDataSource: new UserDataSource(appRedisClient),
         tweetDataSource: new TweetDataSource(appRedisClient),
-      }
+      },
     };
 
     const authHeader = req.headers.authorization || '';
     if (authHeader) {
       const [, token] = authHeader.split('Bearer ');
-      const decodedJwt = await validateToken(token)
+      const decodedJwt = await validateToken(token);
 
       await createUser({
         userId: decodedJwt.sub,
         firstName: decodedJwt.given_name,
         lastName: decodedJwt.family_name,
-      })
+      });
 
       innerContext.user = { id: decodedJwt.sub };
     }
     return innerContext;
-  }
+  },
 });
 
 console.log(`🚀  Server ready at: ${url}`);

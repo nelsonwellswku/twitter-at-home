@@ -14,10 +14,6 @@
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "pnpm run clean && tsc -p tsconfig.release.json",
-    "lint": "eslint . --ext .ts --ext .mts",
-    "test": "jest --coverage",
-    "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
@@ -47,12 +43,7 @@
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-resolvers": "4.0.1",
     "@types/node": "~20.9.2",
-    "@typescript-eslint/eslint-plugin": "~6.10.0",
-    "@typescript-eslint/parser": "~6.10.0",
-    "eslint": "~8.53.0",
-    "eslint-config-prettier": "~9.0.0",
     "nodemon": "^3.0.1",
-    "prettier": "~3.0.3",
     "rimraf": "~5.0.5",
     "tsc-alias": "^1.8.8",
     "tsutils": "~3.21.0",
