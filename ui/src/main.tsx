@@ -1,19 +1,31 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, createHttpLink } from '@apollo/client';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+  createHttpLink,
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { PublicClientApplication, EventType, EventMessage, AuthenticationResult } from "@azure/msal-browser";
+import {
+  PublicClientApplication,
+  EventType,
+  EventMessage,
+  AuthenticationResult,
+} from '@azure/msal-browser';
 import { msalConfig } from './authConfig';
-import appConfig from "./appConfig";
-import App from "./App";
-import './index.css'
+import appConfig from './appConfig';
+import App from './App';
+import './index.css';
 
 const msalInstance = new PublicClientApplication(msalConfig);
 msalInstance.initialize().then(() => {
-
-
   // Default to using the first account if no account is active on page load
-  if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
+  if (
+    !msalInstance.getActiveAccount() &&
+    msalInstance.getAllAccounts().length > 0
+  ) {
     // Account selection logic is app dependent. Adjust as needed for different use cases.
     msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0]);
   }
@@ -22,8 +34,8 @@ msalInstance.initialize().then(() => {
   msalInstance.enableAccountStorageEvents();
 
   msalInstance.addEventCallback((event: EventMessage) => {
-
-    const isSuccessfulLoginEvent = event.eventType === EventType.LOGIN_SUCCESS ||
+    const isSuccessfulLoginEvent =
+      event.eventType === EventType.LOGIN_SUCCESS ||
       event.eventType === EventType.ACQUIRE_TOKEN_SUCCESS ||
       event.eventType === EventType.SSO_SILENT_SUCCESS;
 
@@ -43,16 +55,21 @@ msalInstance.initialize().then(() => {
 
   const authLink = setContext(async (_, { headers }) => {
     const activeAccount = msalInstance.getActiveAccount();
-    if (!activeAccount) { return { ...headers }; }
-    const silentResponse = await msalInstance.acquireTokenSilent({ account: activeAccount, scopes: [msalConfig.auth.clientId] });
+    if (!activeAccount) {
+      return { ...headers };
+    }
+    const silentResponse = await msalInstance.acquireTokenSilent({
+      account: activeAccount,
+      scopes: [msalConfig.auth.clientId],
+    });
     const token = silentResponse.accessToken;
 
     return {
       headers: {
         ...headers,
         authorization: token ? `Bearer ${token}` : undefined,
-      }
-    }
+      },
+    };
   });
 
   const client = new ApolloClient({
@@ -64,8 +81,8 @@ msalInstance.initialize().then(() => {
         },
         User: {
           keyFields: ['userId'],
-        }
-      }
+        },
+      },
     }),
   });
 
@@ -75,5 +92,5 @@ msalInstance.initialize().then(() => {
         <App pca={msalInstance} />
       </ApolloProvider>
     </React.StrictMode>,
-  )
+  );
 });

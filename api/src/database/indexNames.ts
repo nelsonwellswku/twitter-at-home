@@ -1,3 +1,3 @@
 export const indexNames = {
-  TWEET_INDEX: 'idx:tweet'
-}
+  TWEET_INDEX: 'idx:tweet',
+};
