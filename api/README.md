@@ -13,8 +13,6 @@
 - [TypeScript][typescript] [4.8][typescript-4-8]
 - [ESM][esm]
 - [ESLint][eslint] with some initial rules recommendation
-- [Jest][jest] for fast unit testing and code coverage
-- Type definitions for Node.js and Jest
 - [Prettier][prettier] to enforce consistent code style
 - NPM [scripts](#available-scripts) for common operations
 - [EditorConfig][editorconfig] for consistent coding style
@@ -53,7 +51,7 @@ unzip node-typescript-boilerplate.zip && rm node-typescript-boilerplate.zip
 
 ## Available Scripts
 
-- `clean` - remove coverage data, Jest cache and transpiled files,
+- `clean` - remove coverage data and transpiled files,
 - `prebuild` - lint source files and tests before building,
 - `build` - transpile TypeScript to ES6,
 - `build:watch` - interactive watch mode to automatically transpile source files,
@@ -97,7 +95,6 @@ Licensed under the APLv2. See the [LICENSE](https://github.com/jsynowiec/node-ty
 [license]: https://github.com/jsynowiec/node-typescript-boilerplate/blob/main/LICENSE
 [sponsor-badge]: https://img.shields.io/badge/♥-Sponsor-fc0fb5.svg
 [sponsor]: https://github.com/sponsors/jsynowiec
-[jest]: https://facebook.github.io/jest/
 [eslint]: https://github.com/eslint/eslint
 [wiki-js-tests]: https://github.com/jsynowiec/node-typescript-boilerplate/wiki/Unit-tests-in-plain-JavaScript
 [prettier]: https://prettier.io
