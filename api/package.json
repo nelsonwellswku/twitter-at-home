@@ -11,6 +11,7 @@
     "start:dev": "nodemon --watch src -e ts,js,json -x \"pnpm run build && pnpm start\"",
     "clean": "rimraf coverage build tmp",
     "prebuild": "pnpm run lint",
+    "lint": "echo 'No lint at API level; lint from root dir.'",
     "build": "tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "pnpm run clean && tsc -p tsconfig.release.json",
