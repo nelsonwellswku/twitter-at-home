@@ -1,5 +1,3 @@
-import { MagnifyingGlassIcon } from '../Icons';
-
 const NavBar = () => (
   <div className="bg-slate-50">
     <div className="navbar container mx-auto">

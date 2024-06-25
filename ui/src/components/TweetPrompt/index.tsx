@@ -18,30 +18,27 @@ const createTweetMutation = gql`
 
 export const TweetPrompt = () => {
   const [formField, setFormField] = useState('');
-  const [createTweet, { data, loading, error }] = useMutation(
-    createTweetMutation,
-    {
-      update: (cache, { data: { CreateTweet } }) => {
-        cache.modify({
-          fields: {
-            Tweets: (existingTweets = []) => {
-              const newTweetRef = cache.writeFragment({
-                data: CreateTweet,
-                fragment: gql`
-                  fragment NewTweet on Tweets {
-                    tweetId
-                    body
-                    createTime
-                  }
-                `,
-              });
-              return [newTweetRef, ...existingTweets].slice(0, 10);
-            },
+  const [createTweet] = useMutation(createTweetMutation, {
+    update: (cache, { data: { CreateTweet } }) => {
+      cache.modify({
+        fields: {
+          Tweets: (existingTweets = []) => {
+            const newTweetRef = cache.writeFragment({
+              data: CreateTweet,
+              fragment: gql`
+                fragment NewTweet on Tweets {
+                  tweetId
+                  body
+                  createTime
+                }
+              `,
+            });
+            return [newTweetRef, ...existingTweets].slice(0, 10);
           },
-        });
-      },
+        },
+      });
     },
-  );
+  });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFormField(event.target.value);

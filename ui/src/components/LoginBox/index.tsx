@@ -4,10 +4,7 @@ import {
   useMsal,
 } from '@azure/msal-react';
 import LinkButton from '../LinkButton';
-import {
-  IPublicClientApplication,
-  PublicClientApplication,
-} from '@azure/msal-browser';
+import { IPublicClientApplication } from '@azure/msal-browser';
 
 const loginRedirect = async (instance: IPublicClientApplication) => {
   await instance.loginRedirect();
