@@ -34,9 +34,7 @@ export const TweetReply = ({ tweetId }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const [createComment, { data, loading, error }] = useMutation(
-    createCommentMutation,
-  );
+  const [createComment, { loading }] = useMutation(createCommentMutation);
 
   const onSubmit: SubmitHandler<Inputs> = async (form) => {
     await createComment({

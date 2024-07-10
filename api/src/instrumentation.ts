@@ -15,6 +15,11 @@ import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis-4';
 import { DataloaderInstrumentation } from '@opentelemetry/instrumentation-dataloader';
 import { appConfig } from './appConfig.js';
 
+/* Some of this works, probably by coincidence or luck.
+   The open telemetry libraries are not complete or stable for ESM projects.
+   https://github.com/open-telemetry/opentelemetry-js-contrib/issues/1942
+*/
+
 // Register server-related instrumentation
 registerInstrumentations({
   instrumentations: [

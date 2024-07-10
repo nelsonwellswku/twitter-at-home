@@ -44,10 +44,8 @@ const getTweetsQuery = gql`
   }
 `;
 
-export const TweetList = () => {
-  const { loading, error, data } = useQuery<{ Tweets: Tweet[] }>(
-    getTweetsQuery,
-  );
+export const TweetList: () => JSX.Element | null = () => {
+  const { data } = useQuery<{ Tweets: Tweet[] }>(getTweetsQuery);
 
   if (!data || !data.Tweets) {
     return null;
